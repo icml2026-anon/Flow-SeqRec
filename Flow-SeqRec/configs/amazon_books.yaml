@@ -1,0 +1,43 @@
+dataset:
+  name: "amazon_books"
+  data_dir: "./data/amazon_books"
+  max_seq_len: 50
+  min_interactions: 5
+  split_ratio: [0.8, 0.1, 0.1]
+
+model:
+  item_embed_dim: 64
+  hidden_dim: 256
+  num_heads: 4
+  num_encoder_layers: 2
+  dropout: 0.3
+  # Flow matching
+  flow_hidden_dim: 256
+  flow_num_layers: 3
+  ode_solver: "euler"
+  num_ode_steps: 1
+  sigma_min: 1.0e-4
+  # Mixture of Experts
+  moe_num_experts: 8
+  moe_top_k: 2
+  moe_hidden_dim: 256
+  moe_load_balance_weight: 0.01
+
+training:
+  seed: 42
+  batch_size: 256
+  lr: 1.0e-3
+  weight_decay: 1.0e-5
+  num_epochs: 200
+  warmup_epochs: 5
+  patience: 20
+  gradient_clip: 1.0
+  device: "cuda"
+  num_workers: 4
+  log_dir: "./logs/amazon_books"
+  checkpoint_dir: "./checkpoints/amazon_books"
+
+evaluation:
+  ks: [5, 10, 20]
+  full_rank: true
+  eval_batch_size: 128

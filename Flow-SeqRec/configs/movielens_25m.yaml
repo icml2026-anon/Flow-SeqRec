@@ -1,0 +1,43 @@
+dataset:
+  name: "movielens_25m"
+  data_dir: "./data/movielens_25m"
+  max_seq_len: 100
+  min_interactions: 5
+  split_ratio: [0.8, 0.1, 0.1]
+
+model:
+  item_embed_dim: 64
+  hidden_dim: 256
+  num_heads: 4
+  num_encoder_layers: 3
+  dropout: 0.2
+  # Flow matching
+  flow_hidden_dim: 256
+  flow_num_layers: 3
+  ode_solver: "euler"
+  num_ode_steps: 1
+  sigma_min: 1.0e-4
+  # Mixture of Experts
+  moe_num_experts: 8
+  moe_top_k: 2
+  moe_hidden_dim: 256
+  moe_load_balance_weight: 0.01
+
+training:
+  seed: 42
+  batch_size: 512
+  lr: 1.0e-3
+  weight_decay: 1.0e-5
+  num_epochs: 150
+  warmup_epochs: 5
+  patience: 15
+  gradient_clip: 1.0
+  device: "cuda"
+  num_workers: 4
+  log_dir: "./logs/movielens_25m"
+  checkpoint_dir: "./checkpoints/movielens_25m"
+
+evaluation:
+  ks: [5, 10, 20]
+  full_rank: true
+  eval_batch_size: 64
